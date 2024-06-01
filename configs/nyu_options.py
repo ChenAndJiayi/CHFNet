@@ -14,7 +14,6 @@ class NYU_Options():
                             choices=['nyudepthv2', 'kitti', 'imagepath'])
         parser.add_argument('--exp_name',     type=str, default='test')
 
-        
         # depth configs
         parser.add_argument('--max_depth',      type=float, default=10.0) 
         parser.add_argument('--max_depth_eval', type=float, default=10.0)
@@ -24,8 +23,7 @@ class NYU_Options():
         parser.add_argument('--kitti_crop', type=str, default='eigen_crop')
         parser.add_argument('--eigen_crop', default=True)
 
-
-        parser.add_argument('--name', default='GLAP_Depth')
+        parser.add_argument('--name', default='CHFNet')
         parser.add_argument('--root', default='.', help='Root folder to save data in')
         parser.add_argument('--random_seed', default=1)
 
@@ -43,5 +41,4 @@ class NYU_Options():
         parser.add_argument('--validate_every', default=2000)
         parser.add_argument('--log_freq', default=200)
         parser.add_argument('--log_directory', default='train')
-
         return parser
