@@ -92,7 +92,7 @@ class CHF_decoder_all(nn.Module):
         super().__init__()
 
         self.relu = nn.ReLU()
-        # 第5层block，最后一层没有bn和relu，因为这个已经算是output了，但是我看别人的代码还是有BN和relu的这个后续再说吧
+
         self.ASPP5 = LightDASP('BN', 'ReLU', 128)
         self.conv_block5 = nn.Sequential(
                                          conv3x3(128, 64),
@@ -102,7 +102,7 @@ class CHF_decoder_all(nn.Module):
 
 
 
-        # 第4层 block
+
         self.conv4_up = conv1x1(128, 320) # 只有一个卷积层, 768-->384
         self.ASPP4 = LightDASP('BN', 'ReLU', 160)      # aspp4 channel is 640
         self.conv_block4 = nn.Sequential(
@@ -111,7 +111,7 @@ class CHF_decoder_all(nn.Module):
                                          nn.Conv2d(32, 1,3,1,1)
                                          )
         
-        # 第3层block
+
         self.conv3_up = nn.Sequential(conv3x3(288, 256))
         self.ASPP3 = LightDASP('BN', 'ReLU', 64 )
         self.conv_block3 = nn.Sequential(
@@ -119,14 +119,14 @@ class CHF_decoder_all(nn.Module):
                                          nn.Conv2d(32, 1,3,1,1)
                                          )
 
-        # 第2层block
+
         self.ASPP2 = LightDASP('BN', 'ReLU', 32 )
         self.conv_block2 = nn.Sequential(
                                          conv3x3(36, 16),
                                          nn.Conv2d(16, 1,3,1,1)
                                          )
         
-        # 第1层block
+
         self.ASPP1 = LightDASP('BN', 'ReLU', 8 )
         self.conv_block1 = nn.Sequential(conv3x3(12, 8),conv3x3(8, 4),nn.Conv2d(4, 1,3,1,1))
         self.up_2= nn.PixelShuffle(2)
@@ -147,7 +147,7 @@ class CHF_decoder_all(nn.Module):
         sizeup_4    = self.up_2(aspp4_in)               # 640/4 = 160, 1/8
         aspp4       = self.ASPP4(sizeup_4)              # 160
         aspp4_cat   = torch.cat([aspp4 ,rgb_lv4,att5_up ],dim=1) # 160 + 3 + 1, 1/8
-        att4        = self.conv_block4(aspp4_cat)  #  这里加上rgb_lv4的边缘图
+        att4        = self.conv_block4(aspp4_cat) 
         att4_up     = F.interpolate(att4, scale_factor=2, mode='bilinear', align_corners=True) # 1/4
 
         conv3       = self.conv3_up(torch.cat([x_2,aspp4],dim=1)) # 128+160-->256
