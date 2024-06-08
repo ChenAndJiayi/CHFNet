@@ -26,13 +26,13 @@ class imagepath(Dataset):
         filename = file.split('/')[-1]
 
         image = cv2.imread(file)  # [H x W x C] and C: BGR
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) #从BGR转换到RGB
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
         
-        # input size should be multiple of 32, size必须是32的倍数
+        # input size should be multiple of 32
         h, w, c = image.shape
         new_h, new_w = h // 32 * 32, w // 32 * 32
-        image = cv2.resize(image, (new_w, new_h))   #重新确定形状
-        image = self.to_tensor(image)               #转为tensor类型
+        image = cv2.resize(image, (new_w, new_h)) 
+        image = self.to_tensor(image)             
 
         batch['image'] = image
         batch['filename'] = filename
