@@ -3,7 +3,6 @@ import cv2
 
 from dataset.base_dataset import BaseDataset
 
-
 class kitti(BaseDataset):
     def __init__(self, data_path, filenames_path='./dataset/filenames/',
                  is_train=True, dataset='kitti', crop_size=(352, 704),
@@ -30,7 +29,7 @@ class kitti(BaseDataset):
         print("Dataset :", dataset)
         print("# of %s images: %d" % (phase, len(self.filenames_list)))
 
-    # kb cropping 将图像重新 resize 352*1216
+
     def cropping(self, img):
         h_im, w_im = img.shape[:2]
 
@@ -46,7 +45,7 @@ class kitti(BaseDataset):
         return len(self.filenames_list)
 
     def __getitem__(self, idx):
-        # 获取图片，将图片
+
         img_path = self.data_path + self.filenames_list[idx].split(' ')[0]
         gt_path = self.data_path + self.filenames_list[idx].split(' ')[1]
         filename = img_path.split('/')[-4] + '_' + img_path.split('/')[-1]
@@ -63,7 +62,7 @@ class kitti(BaseDataset):
             depth = cv2.resize(depth, (self.scale_size[0], self.scale_size[1]))
 
         if self.is_train:
-            image, depth = self.augment_training_data(image, depth) #数据增强
+            image, depth = self.augment_training_data(image, depth) 
         else:
             image, depth = self.augment_test_data(image, depth)
 
