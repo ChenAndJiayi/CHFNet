@@ -36,7 +36,7 @@ class BaseDataset(Dataset):
             listInTXT = [line.strip() for line in f]
 
         return listInTXT
-    """ 数据增强 """
+
     def augment_training_data(self, image, depth):
         H, W, C = image.shape
 
@@ -53,12 +53,12 @@ class BaseDataset(Dataset):
                 image[:, l:l+w, 1] = depth[:, l:l+w]
                 image[:, l:l+w, 2] = depth[:, l:l+w]
 
-        additional_targets = {'depth': 'mask'} #字典
+        additional_targets = {'depth': 'mask'} 
         aug = A.Compose(transforms=self.basic_transform,
                         additional_targets=additional_targets)
         augmented = aug(image=image, depth=depth)
-        image = augmented['image'] #数据增强后的图像
-        depth = augmented['depth'] # depth图像应该没做修改
+        image = augmented['image'] 
+        depth = augmented['depth'] 
 
         image = self.to_tensor(image)
         depth = self.to_tensor(depth).squeeze()
